@@ -1654,8 +1654,17 @@ config MBEDTLS_X509_CSR_WRITE_C
 
 endif # NRF_SECURITY_ADVANCED
 
-comment "PSA Native ITS"
-rsource "src/psa/Kconfig"
+config MBEDTLS_PSA_CRYPTO_C
+	bool "Enable PSA API support"
+	help
+	  Enables the usage of the PSA APIs in mbed TLS.
+	  Corresponds to MBEDTLS_PSA_CRYPTO_C setting in mbed TLS config file.
+
+if MBEDTLS_PSA_CRYPTO_C
+
+rsource "Kconfig.psa"
+
+endif # PSA_API_SUPPORT
 
 endif # NRF_SECURITY_ANY_BACKEND
 
