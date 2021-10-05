@@ -13,6 +13,7 @@ if(CONFIG_BT_LL_SOFTDEVICE)
   nrfxlib_calculate_lib_path(lib_path)
 
   set(SOFTDEVICE_CONTROLLER_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/${lib_path})
+  nrfxlib_check_softfp_path(SOFTDEVICE_CONTROLLER_LIB_PATH)
 
   if(NOT EXISTS ${SOFTDEVICE_CONTROLLER_LIB_PATH})
     message(WARNING "This combination of SoC and floating point ABI is not supported by the SoftDevice Controller lib."

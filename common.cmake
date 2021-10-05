@@ -41,6 +41,18 @@ function(nrfxlib_calculate_lib_path lib_path)
   set(${lib_path} "lib/${arch_soc_dir}/${float_dir}${short_wchar}" PARENT_SCOPE)
 endfunction()
 
+function(nrfxlib_check_softfp_path lib_name)
+  if (CONFIG_FP_SOFTABI)
+    set(lib_full_path ${${lib_name}})
+    string(REGEX REPLACE "softfp-float" "soft-float" soft_path ${lib_full_path})
+
+    if(NOT EXISTS ${lib_full_path} AND EXISTS ${soft_path})
+      message("There is no softfp version for library ${lib_name}, using the soft-float version.")
+      set(${lib_name} ${soft_path} PARENT_SCOPE)
+    endif()
+  endif()
+endfunction()
+
 function(get_mbedtls_dir ARM_MBEDTLS_PATH_ARG)
   if(EXISTS ${${ARM_MBEDTLS_PATH_ARG}})
   # Do nothing, just use the provided path

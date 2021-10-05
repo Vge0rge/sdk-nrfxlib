@@ -7,6 +7,7 @@
 nrfxlib_calculate_lib_path(lib_path)
 
 set(NFC_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/${lib_path})
+nrfxlib_check_softfp_path(NFC_LIB_PATH)
 
 if(NOT EXISTS ${NFC_LIB_PATH})
   message(WARNING "This combination of SoC and floating point ABI is not supported by the nfc lib."

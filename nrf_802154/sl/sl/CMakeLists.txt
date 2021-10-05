@@ -9,6 +9,7 @@ add_library(nrf-802154-sl INTERFACE)
 nrfxlib_calculate_lib_path(lib_path SOC_MODE)
 
 set(NRF_802154_SL_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/${lib_path})
+nrfxlib_check_softfp_path(NRF_802154_SL_LIB_PATH)
 
 if(NOT EXISTS ${NRF_802154_SL_LIB_PATH})
   message(WARNING "This combination of SoC and floating point ABI is not supported by the nrf_802154_sl lib."

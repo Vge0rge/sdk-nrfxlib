@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018 Nordic Semiconductor
+# Copyright (c) 2021 Nordic Semiconductor
 #
 # SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
 #
@@ -12,15 +12,15 @@ add_library(nrfxlib_crypto INTERFACE)
 
 if (CONFIG_NRF_OBERON OR CONFIG_BUILD_WITH_TFM)
 
-  # The oberon library doesn't have a softfp version so we replace its path with the soft-float one
-  if (CONFIG_FP_SOFTABI)
-        string(REGEX REPLACE "softfp-float" "soft-float"  lib_path ${lib_path})
-  endif()
-
   set(OBERON_BASE ${CMAKE_CURRENT_SOURCE_DIR}/nrf_oberon)
   set(OBERON_VER 3.0.8)
+
   set(OBERON_LIB ${OBERON_BASE}/${lib_path}/liboberon_${OBERON_VER}.a)
+  nrfxlib_check_softfp_path(OBERON_LIB)
+
   set(OBERON_MBEDTLS_LIB ${OBERON_BASE}/${lib_path}/liboberon_mbedtls_${OBERON_VER}.a)
+  nrfxlib_check_softfp_path(OBERON_MBEDTLS_LIB)
+
   if(NOT EXISTS ${OBERON_LIB})
     message(WARNING "This combination of SoC and floating point ABI is not supported by the nrf_oberon lib."
                     "(${OBERON_LIB} doesn't exist.)")
@@ -74,6 +74,8 @@ if (CONFIG_NRF_CC310_BL)
   endif()
   set(CC310_BL_VER 0.9.12)
   set(CC310_BL_LIB ${CC310_BL_BASE}/${lib_path}/${CC310_FLAVOR}/libnrf_cc310_bl_${CC310_BL_VER}.a)
+  nrfxlib_check_softfp_path(CC310_BL_LIB)
+
   if(NOT EXISTS ${CC310_BL_LIB})
     message(WARNING "This combination of SoC, floating point ABI, and interrupts settings is not supported by the nrf_cc310_bl lib."
                     "(${CC310_BL_LIB} doesn't exist.)")
@@ -96,6 +98,7 @@ if (CONFIG_NRF_CC3XX_PLATFORM)
   set(NRF_CC3XX_PLATFORM_LIB
     ${NRF_CC3XX_PLATFORM_BASE}/${lib_path}/${CC3XX_PLATFORM_FLAVOR}/libnrf_${CC3XX_ARCH}_platform_${NRF_CC3XX_PLATFORM_VER}.a
   )
+  nrfxlib_check_softfp_path(NRF_CC3XX_PLATFORM_LIB)
 
   if (NOT EXISTS ${NRF_CC3XX_PLATFORM_LIB})
     message(WARNING "This combination of SoC, floating point ABI, and interrupts settings is not supported by the nrf_${CC3XX_ARCH}_platform lib."
@@ -138,6 +141,8 @@ if (CONFIG_CC3XX_BACKEND)
   set(NRF_CC3XX_LIB
     ${NRF_CC3XX_BASE}/${lib_path}/${CC3XX_FLAVOR}/libnrf_${CC3XX_ARCH}_mbedcrypto_${NRF_CC3XX_VER}.a
   )
+  nrfxlib_check_softfp_path(NRF_CC3XX_LIB)
+
   if(NOT EXISTS ${NRF_CC3XX_LIB})
     message(WARNING "This combination of SoC, floating point ABI, and interrupts settings is not supported by the nrf_${CC3XX_ARCH}_mbedcryto lib."
                     "(${NRF_CC3XX_LIB} doesn't exist.)")
